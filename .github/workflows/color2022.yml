@@ -1,33 +1,31 @@
- 
+name: Build & Release Python Soul
 
-name: Build & Release Python Soul 
+on:
+  push:
+    tags:
+      - 'v*'
 
-on: push: tags: - 'v*' # 例如 v1.0.0 會觸發 
+jobs:
+  build-and-release:
+    runs-on: windows-latest  # 如果你要打包成 .exe，請用 windows
 
-jobs: build-and-release: runs-on: ubuntu-latest 
+    steps:
+      - uses: actions/checkout@v4
 
-steps: 
-  - name: Checkout your source karma 
-    uses: actions/checkout@v4 
- 
-  - name: Set up Python 
-    uses: actions/setup-python@v3 
-    with: 
-      python-version: '3.8' 
- 
-  - name: Install build dependencies 
-    run: | 
-      python -m pip install --upgrade pip 
-      pip install pyinstaller 
- 
-  - name: Build executable with pyinstaller 
-    run: | 
-      pyinstaller --onefile monkey.py 
- 
-  - name: Upload soul artifact to GitHub Release 
-    uses: softprops/action-gh-release@v1 
-    with: 
-      files: dist/monkey.py 
-    env: 
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
- 
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'  # ← 請務必高於 3.8
+
+      - name: Install PyInstaller
+        run: pip install pyinstaller
+
+      - name: Build with PyInstaller
+        run: pyinstaller --onefile your_script.py --name submit_soul
+
+      - name: Upload to GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: dist/submit_soul.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
