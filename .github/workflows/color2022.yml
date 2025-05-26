@@ -1,4 +1,4 @@
-name: Build & Release Python Soul
+name: color2022
 
 on:
 workflow_dispatch:
