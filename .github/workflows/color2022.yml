@@ -5,21 +5,25 @@ on:
 
 jobs:
   build-and-release:
-    runs-on: windows-latest  # 如果你要打包成 .exe，請用 windows
+    runs-on: windows-latest  # 使用 Windows 打包 .exe
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: Set up Python
+      - name: Set up Python 3.11
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'  # ← 請務必高於 3.8
+          python-version: '3.11'
 
       - name: Install PyInstaller
-        run: pip install pyinstaller
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyinstaller
 
       - name: Build with PyInstaller
-        run: pyinstaller --onefile monkey.py --name submit_soul
+        run: |
+          pyinstaller --onefile monkey.py --name submit_soul
 
       - name: Upload to GitHub Release
         uses: softprops/action-gh-release@v1
