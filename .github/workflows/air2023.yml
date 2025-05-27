@@ -4,30 +4,28 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-and-release:
-    runs-on: windows-latest  # 使用 Windows 打包 .exe
+  build:
+    name: Build Executable
+    runs-on: windows-latest  # 使用 Windows runner，以便打包為 .exe
 
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Python 3.11
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: '3.11'  # PyInstaller 需要 3.8+
 
       - name: Install PyInstaller
-        run: |
-          python -m pip install --upgrade pip
-          pip install pyinstaller
+        run: pip install pyinstaller
 
-      - name: Build with PyInstaller
-        run: |
-          pyinstaller --onefile monkey.py --name submit_soul
+      - name: Package with PyInstaller
+        run: pyinstaller --onefile monkey.py --name your_app
 
-      - name: Upload to GitHub Release
+      - name: Upload Executable to GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          files: dist/submit_soul.exe
+          files: dist/monkey.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
