@@ -28,8 +28,8 @@ jobs:
         run: pyinstaller --onefile monkey.py --name your_app
 
       - name: Upload Executable to GitHub Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
-          files: dist/monkey.exe
+          files: ./dist/**
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
