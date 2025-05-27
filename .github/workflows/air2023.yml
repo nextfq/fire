@@ -1,11 +1,6 @@
 name: air2023
 on:
   workflow_dispatch:
-    inputs:
-      tag_name:
-        description: 'Tag name for this release (e.g. v1.0.0)'
-        required: true
-        default: 'v1.0.0'
 
 jobs:
   build:
@@ -21,15 +16,10 @@ jobs:
         with:
           python-version: '3.11'  # PyInstaller 需要 3.8+
 
-      - name: Install PyInstaller
-        run: pip install pyinstaller
+      - name: Install dependencies
+        run: pip install -r requirements.txt
 
-      - name: Package with PyInstaller
-        run: pyinstaller --onefile monkey.py --name your_app
-
-      - name: Upload Executable to GitHub Release
-        uses: softprops/action-gh-release@v2
-        with:
-          files: ./dist/**
+      - name: python tiger
+        run: python monkey.py
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
