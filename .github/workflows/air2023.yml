@@ -1,4 +1,4 @@
-name: air2022
+name: sun2022
 on:
   workflow_dispatch:
 
