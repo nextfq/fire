@@ -1,4 +1,4 @@
-name: snake2022
+name: lion2022
 on:
   workflow_dispatch:
 
