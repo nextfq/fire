@@ -1,4 +1,4 @@
-name: sun2022
+name: snake2022
 on:
   workflow_dispatch:
 
