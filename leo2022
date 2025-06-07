@@ -1,0 +1,46 @@
+import requests
+# import sys
+# import io
+# sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+from bs4 import BeautifulSoup
+# 設定目標網址格式
+# base_url = "https://www.tradingview.com/news-flow/"
+base_url = "https://www.travelweekly.com/"
+# base_url = "https://www.seattletimes.com/seattle-news/"
+# 定義分類
+categories = [
+  "1",]
+#    "2",
+#   "3",
+#   "4",
+#   "5",
+#    ]
+    # 設定請求標頭，避免被網站封鎖
+headers = { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36" }
+# headers = {
+#    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36",
+#    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
+#    "Accept-Language": "en-US,en;q=0.9",
+#    "Referer": "https://www.google.com/",
+#    "Connection": "keep-alive"}
+    # 遍歷分類
+for category in categories:
+    url=base_url #+format(category)  # 生成對應的網址
+    print(f"\n========= START WAR {category} =========\n")
+    try:
+      response=requests.get(url,headers=headers,timeout=10)
+      response.raise_for_status() # 檢查請求是否成功
+    except requests.exceptions.RequestException as e:
+        print(f"Fail Again ...", e)
+        continue# 跳過當前分類，進入下一個分類
+     # 解析 HTML
+    soup = BeautifulSoup(response.text,"html.parser")
+     # 找
+    search_results = soup.find_all(string=lambda text: "%" in text if text else False)
+# 輸出結果
+    if search_results:
+        for result in search_results:
+          print(f"[{category}] and: {result.strip()}")
+    else:
+        print(f"[{category}] Still Fail ...")
+    print("=" * 95)  # 分隔線
