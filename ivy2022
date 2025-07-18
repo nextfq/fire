@@ -1,61 +1,10 @@
-import requests
-import pandas as pd
-from sklearn.cluster import KMeans
-import folium
+from flask import Flask
 
-# 替换为您的高德地图开发者密钥
-amap_key = 'a59c3d83a39846a80dc3e76bb29198b4'
+app = Flask(__name__)
 
-# 定义搜索关键词和城市
-keywords = ['加油站', '4S店']
-city = '台北市'
+@app.route('/')
+def hello_world():
+    return 'Hello, World!'
 
-# 存储所有POI数据的列表
-all_pois = []
-
-for keyword in keywords:
-    # 构建请求URL
-    url = f"https://restapi.amap.com/v3/place/text?keywords={keyword}&city={city}&output=json&key={amap_key}"
-    
-    # 发送HTTP请求获取数据
-    response = requests.get(url)
-    data = response.json()
-    
-    if data['status'] == '1':
-        pois = data['pois']
-        
-        for poi in pois:
-            location = poi['location'].split(',')
-            all_pois.append({
-                'name': poi['name'],
-                'type': keyword,
-                'longitude': float(location[0]),
-                'latitude': float(location[1])
-            })
-    else:
-        print(f"Error fetching data for {keyword}: {data['info']}")
-
-# 将所有POI数据转换为DataFrame
-df = pd.DataFrame(all_pois)
-
-# 使用K-means进行聚类分析
-kmeans = KMeans(n_clusters=5, random_state=42)
-df['cluster'] = kmeans.fit_predict(df[['longitude', 'latitude']])
-
-# 创建一个基础地图，设置初始位置为中心点（台北）
-# m = folium.Map(location=[25.032969, 121.565418], zoom_start=12, tiles='Stamen Terrain')
-import folium
-m = folium.Map(location=[25.032969, 121.565418], zoom_start=12, tiles='OpenStreetMap')
-# 添加每个POI到地图上，并根据其所属的集群添加不同的颜色
-colors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#00FFFF']
-
-for index, row in df.iterrows():
-    folium.Marker(
-        location=[row['latitude'], row['longitude']],
-        popup=row['name'] + " (" + row['type'] + ")",
-        icon=folium.Icon(color=colors[row['cluster']])
-    ).add_to(m)
-
-# 显示地图
-m.save('taipei_car_service_clusters.html')
-print("地图已保存为 taipei_car_service_clusters.html")
+if __name__ == '__main__':
+    app.run(debug=True)
