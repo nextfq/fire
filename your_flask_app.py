@@ -1,9 +1,10 @@
 from flask import Flask
 
-app = Flask(__name__)
+def create_app():
+    app = Flask(__name__)
 
-@app.route('/')
-def home():
-    return "Hello, Flask!"
-if __name__ == '__main__':
-    app.run
+    @app.route('/')
+    def hello_world():
+        return 'Hello, World!'
+
+    return app
