@@ -1,9 +1,8 @@
-
 on:
-  schedule: # This is the event name
-    - cron: '22,44 * * *' # This is the cron expression, inside a list defined by '-'
-  # Want to run on push, you'd add:
-  # push:event
+  schedule: # This is the the event name
+    - cron: '22,44 * * * *' # Corrected: Added the fifth '*' for Day of Week
+  # Keep your other triggers if you still want them, e.g.:
+  # push: branches:
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -27,6 +26,7 @@ jobs:
           app-name: 'blueApple2022'
           slot-name: 'Production'
           package: '.'
+
 
 
 
