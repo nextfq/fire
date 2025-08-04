@@ -1,3 +1,6 @@
+
+on:
+   -cron: '22,44 * * * *'
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -21,3 +24,4 @@ jobs:
           app-name: 'blueApple2022'
           slot-name: 'Production'
           package: '.'
+
