@@ -55,13 +55,13 @@ jobs:
       # 替換為您的伺服器 IP 和用戶名，以及部署路徑
       run: |
 
-       name: Tiger 
-       # 這是步驟名稱  
-      uses: azure/webapps-deploy@v2  
-      with: app-name: 'redWind2022' # 請替換為你的 Azure Web App 名稱  
-      slot-name: 'production' # 如果你使用部署時段 (Deployment Slot)，就填寫，否則可省略或使用  
-      production' publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }} # 這是關鍵的認證資訊  
-      package: '.'  # 表示部署當前目錄下的所有檔案 
+  - name: Tiger        # 這是步驟名稱
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'redWind2022' # 請替換為你的 Azure Web App 名稱
+        slot-name: 'production'  # 如果你使用部署時段 (Deployment Slot)，就填寫，否則可省略或使用 production'
+        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }} # 這是關鍵的認證資訊
+        package: '.'  # 表示部署當前目錄下的所有檔案
       # scp -r ./* user@your_server_ip:/var/www/your_flask_app/
       # ssh user@your_server_ip "sudo systemctl restart your_flask_app_service" # 假設您有 systemd 服務
 
