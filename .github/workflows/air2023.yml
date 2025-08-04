@@ -23,7 +23,7 @@ jobs:
     - name: 設定 Python 環境
       uses: actions/setup-python@v5
       with:
-        python-version: '3.11 # 您可以根據需要更改 Python 版本
+        python-version: '3.11' # 您可以根據需要更改 Python 版本
 
     - name: 安裝依賴套件
       run: |
