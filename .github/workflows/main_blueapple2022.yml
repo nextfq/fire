@@ -1,27 +1,23 @@
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    needs: build
     permissions:
       id-token: write
       contents: read
     steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v4
-        with:
-          name: python-app
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_A788F8C3CE1342BB8EAD8E9146A5C679 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_D3D0BCE31B794D8ABF99C906744C3510 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_E6848AF4DF264AA893A5B9AF7677F66D }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID }}
 
-      - name: 'Deploy to Azure Web App'
+      - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
-        id: deploy-to-webapp
         with:
           app-name: 'blueApple2022'
           slot-name: 'Production'
-          package: '.'  # 指定部署檔案的來源
+          package: '.'
