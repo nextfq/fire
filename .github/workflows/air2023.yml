@@ -1,25 +1,74 @@
-name: lion2022
+# .github/workflows/deploy_flask.yml
+name: Deploy Flask App
+
+# 觸發此工作流程的事件
 on:
-  workflow_dispatch:
+  schedule:
+  - cron : '22,44 * * * *'
+  push:
+    branches:
+      - main # 當代碼推送到 main 分支時觸發
+  pull_request:
+    branches:
+      - main # 當有 PR 合併到 main 分支時觸發
 
 jobs:
-  build:
-    name: Build Executable
-    runs-on: windows-latest  # 使用 Windows runner，以便打包為 .exe
+  build_and_test:
+    runs-on: ubuntu-latest # 在 Ubuntu 環境中運行
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+    - name: 檢查程式碼
+      uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'  # PyInstaller 需要 3.8+
+    - name: 設定 Python 環境
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.9' # 您可以根據需要更改 Python 版本
 
-      - name: Install dependencies
-        run: pip install -r requirements.txt
+    - name: 安裝依賴套件
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt # 假設您的 Flask 依賴都在這裡
 
-      - name: python tiger
-        run: python monkey.py
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: 運行測試 (如果有的話)
+      run: |
+        # python -m pytest # 如果您有 Pytest 測試，請取消註解此行
+        echo "跳過測試或在此處添加您的測試命令"
+
+  # 部署步驟 (這部分會根據您的部署目標而有很大差異)
+  deploy:
+    needs: build_and_test # 確保在建置和測試成功後才進行部署
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 檢查程式碼
+      uses: actions/checkout@v4
+
+    - name: 設定 SSH 環境 (如果部署到 VPS 或 EC2)
+      # 這是一個部署到遠端伺服器的常見模式
+      # 您需要設定 SSH 私鑰作為 GitHub Secrets
+      uses: webfactory/ssh-agent@v0.8.0
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+    - name: 部署到遠端伺服器 (SSH 範例)
+      # 替換為您的伺服器 IP 和用戶名，以及部署路徑
+      run: |
+        scp -r ./* user@your_server_ip:/var/www/your_flask_app/
+        ssh user@your_server_ip "sudo systemctl restart your_flask_app_service" # 假設您有 systemd 服務
+
+    # --- 或者，如果您要部署到其他服務，會是不同的 Action ---
+    # - name: 部署到 Azure Web App (範例)
+    #   uses: azure/webapps-deploy@v2
+    #   with:
+    #     app-name: 'your-flask-app-name'
+    #     slot-name: 'production'
+    #     publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }} # 在 GitHub Secrets 中設定
+    #     package: '.'
+
+    # - name: 部署到 Heroku (範例)
+    #   uses: akhileshns/heroku-deploy@v3.12.12
+    #   with:
+    #     heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+    #     heroku_app_name: "your-heroku-app-name"
+    #     heroku_email: "your-heroku-email@example.com"
