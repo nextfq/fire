@@ -1,7 +1,7 @@
 
 on:
   schedule: # This is the event name
-    - cron: '22,44 * * * *' # This is the cron expression, inside a list defined by '-'
+    - cron: '22,44 * * *' # This is the cron expression, inside a list defined by '-'
   # Want to run on push, you'd add:
   # push:event
 jobs:
@@ -27,5 +27,6 @@ jobs:
           app-name: 'blueApple2022'
           slot-name: 'Production'
           package: '.'
+
 
 
