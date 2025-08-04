@@ -4,8 +4,7 @@ deploy:
     permissions:
       id-token: write #This is required for requesting the JWT
       contents: read
-
-    steps: # <--- THIS IS THE CRITICAL LINE (Line 8 in your error)! It must be at 4 spaces indentation.
+        steps: # <--- THIS IS THE CRITICAL LINE (Line 8 in your error)! It must be at 4 spaces indentation.
       - name: Download artifact from build job # (6 spaces indentation)
         uses: actions/download-artifact@v4 # (8 spaces indentation)
         with: # (8 spaces indentation)
@@ -25,5 +24,6 @@ deploy:
           app-name: 'blueApple2022'
           slot-name: 'Production'
           package: '.' # <-- 這就是你需要添加的關鍵行！
+
 
 
