@@ -9,5 +9,5 @@ def waiter():
 def say_hi():  
     return "👋 Hi there! 我是 Lemon API 的接待員"  
  # 🚦 這段是讓程式「啟動」，就像店門開張  
-if __name__ == '__main__': 
-lemon.run(host='0.0.0.0', port=8000) 
+if __name__ == '__main__':
+    lemon.run(host='0.0.0.0', port=8000)
