@@ -23,7 +23,7 @@ jobs:
     - name: 設定 Python 環境
       uses: actions/setup-python@v5
       with:
-        python-version: '3.9' # 您可以根據需要更改 Python 版本
+        python-version: '3.11 # 您可以根據需要更改 Python 版本
 
     - name: 安裝依賴套件
       run: |
@@ -54,8 +54,9 @@ jobs:
     - name: 部署到遠端伺服器 (SSH 範例)
       # 替換為您的伺服器 IP 和用戶名，以及部署路徑
       run: |
-        scp -r ./* user@your_server_ip:/var/www/your_flask_app/
-        ssh user@your_server_ip "sudo systemctl restart your_flask_app_service" # 假設您有 systemd 服務
+      apple.py
+      # scp -r ./* user@your_server_ip:/var/www/your_flask_app/
+      # ssh user@your_server_ip "sudo systemctl restart your_flask_app_service" # 假設您有 systemd 服務
 
     # --- 或者，如果您要部署到其他服務，會是不同的 Action ---
     # - name: 部署到 Azure Web App (範例)
