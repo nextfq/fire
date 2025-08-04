@@ -3,16 +3,16 @@ deploy:
     needs: build
     permissions:
       id-token: write #This is required for requesting the JWT
-      contents: read #This is required for actions/checkout
+      contents: read
 
-    steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v4
-        with:
-          name: python-app
-      
-      - name: Login to Azure
-        uses: azure/login@v2
+      steps: # This 'steps:' should be indented by 6 spaces (or 2 spaces from 'deploy:')
+        - name: Download artifact from build job
+          uses: actions/download-artifact@v4
+          with:
+            name: python-app
+        # This blank line (if it has any invisible characters) or the next line is 13
+        - name: Login to Azure # This line should have the exact same indentation as the 'Download artifact...' step above it.
+          uses: azure/login@v2
         with:
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_A788F8C3CE1342BB8EAD8E9146A5C679 }}
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_D3D0BCE31B794D8ABF99C906744C3510 }}
@@ -25,3 +25,4 @@ deploy:
           app-name: 'blueApple2022'
           slot-name: 'Production'
           package: '.' # <-- 這就是你需要添加的關鍵行！
+
