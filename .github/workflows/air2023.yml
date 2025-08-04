@@ -54,7 +54,7 @@ jobs:
     - name: 部署到遠端伺服器 (SSH 範例)
       # 替換為您的伺服器 IP 和用戶名，以及部署路徑
       run: |
-      https://github.com/nextfq/fire/blob/main/apple.py
+      scp -r ./* github.com:/nextfq/fire/blob/main/apple.py
       # scp -r ./* user@your_server_ip:/var/www/your_flask_app/
       # ssh user@your_server_ip "sudo systemctl restart your_flask_app_service" # 假設您有 systemd 服務
 
