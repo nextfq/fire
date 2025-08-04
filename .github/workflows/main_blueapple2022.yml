@@ -4,12 +4,12 @@ deploy:
     permissions:
       id-token: write #This is required for requesting the JWT
       contents: read
-          steps: # <--- THIS IS THE CRITICAL LINE (Line 8 in your error)! It must be at 4 spaces indentation.
-            - name: Download artifact from build job # (6 spaces indentation)
-              uses: actions/download-artifact@v4 # (8 spaces indentation)
-              with: # (8 spaces indentation)
-                name: python-app # (10 spaces indentation)
-                   # This blank line (if it has any invisible characters) or the next line is 13
+    steps: # <--- THIS IS THE CRITICAL LINE (Line 8 in your error)! It must be at 4 spaces indentation.
+      - name: Download artifact from build job # (6 spaces indentation)
+        uses: actions/download-artifact@v4 # (8 spaces indentation)
+        with: # (8 spaces indentation)
+          name: python-app # (10 spaces indentation)
+             # This blank line (if it has any invisible characters) or the next line is 13
         - name: Login to Azure # This line should have the exact same indentation as the 'Download artifact...' step above it.
           uses: azure/login@v2
         with:
@@ -24,6 +24,7 @@ deploy:
           app-name: 'blueApple2022'
           slot-name: 'Production'
           package: '.' # <-- 這就是你需要添加的關鍵行！
+
 
 
 
